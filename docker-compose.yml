@@ -1,0 +1,17 @@
+services:
+  backend:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    restart: always
+    volumes:
+      # Montamos un volumen para MySQL para no perder los datos de bd
+      - ./volumenes/backend:/var/lib/mysql
+    expose:
+      - 3309
+    ports:
+      - 3309:3306
+    platform: linux/x86_64

@@ -1,12 +1,12 @@
 import express from 'express';
+import { router } from '../routes/index.js';
 
-const app = express();
+export const app = express();
 
 //middleware
 app.use(express.json());
 
 //routers
+app.use('/api', router)
 
 
-
-export default app;
