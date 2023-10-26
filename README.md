@@ -5,16 +5,8 @@
 # Teslo API
 
 1. Clonar proyecto
-2. ```npm install ```
-3. Clonar archivo ```env.template```y renombrearlo por ```.env```
-4. Cambiar las variables de entorno
-5. levantar la BD
-```
-docker-compose up -d
-```
-6. Levantar modo desarrollo: ```npm run start:dev```
-
-7. Ejecutar SEED
-```
-http://localhost:3000/api/seed
-```
+2. ```npm install || npm i```.
+3. Cambiar las variables de entorno y el archivo `.env.template` por `.env`.
+5. levantar la BD con el comando `docker-compose up -d`.
+6. Levantar modo desarrollo: ```npm run start```.
+7. Ejecutar SEED `http://localhost:3000/api/seed`.
