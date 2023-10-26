@@ -1,2 +1,3 @@
-export { getAllStudents, createStudent, deleteStudent, updateStudent } from "./student.js";
+import StudentController from "./student.js";
+export {StudentController}
 

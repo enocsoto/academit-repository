@@ -1,1 +1,2 @@
-export {router} from './student.js';
+import router from './student.js'
+export {router}

@@ -1,2 +1,3 @@
-export { StudentService } from "./student.js";
+import StudentService from "./student.js";
+export {StudentService};
 

@@ -1,36 +1,52 @@
 import { request, response } from "express";
 import { StudentService } from "../service/index.js";
-const students = new StudentService
-export const getAllStudents = (req = request, res = response) => {
-    const getStudentes = students.getAllStudents()
+import HttpResponse from '../utils/errorHandler.js'
 
-    res.status(200).json({
-        msg: getStudentes
-    })
+class StudentController {
+  async getStudentById(req = request, res = response) {
+    try {
+      const getOneStudentById = await StudentService.getStudent(req);
+      return HttpResponse.Ok(res, getOneStudentById)
+    } catch (error) {
+      return HttpResponse.NotFound(res, error.message);
+    }
+  }
+
+  async getAllStudents(req = request, res = response) {
+    try {
+      const getStudents = await StudentService.getAllStudents(req);
+     return HttpResponse.Ok(res, getStudents);
+    } catch (error) {
+      return HttpResponse.InternalError(res, error.message)
+    }
+  }
+
+  async createStudent(req = request, res = response) {
+    try {
+      const studentCreated = await StudentService.createStudent(req);
+      return HttpResponse.Created(res, studentCreated);
+    } catch (error) {
+      return HttpResponse.InternalError(res, error.message)
+    }
+  }
+
+  async updateStudent(req = request, res = response) {
+    try {
+      const studentUpdated = await StudentService.putStudent(req);
+      return HttpResponse.Ok(res, studentUpdated)
+    } catch (error) {
+      return HttpResponse.InternalError(res, error.message);
+    }
+  }
+
+  async deleteStudent(req = request, res = response) {
+    try {
+      await StudentService.deleteStudent(req);
+      return HttpResponse.Ok(res, 'Student Deleted')
+    } catch (error) {
+      HttpResponse.NotFound(res, error.message)
+    }
+  }
 }
-export const createStudent = (req = request, res = response) => {
-    const createStudent = students.createStudent()
 
-    res.status(200).json({
-        msg: createStudent
-    })
-}
-
-export const updateStudent = (req = request, res = response) => {
-    const {body} = req;
-    const updateStudent = students.putStudent()
-
-    res.status(200).json({
-        msg: updateStudent,
-        body
-    })
-}
-
-export const deleteStudent = (req = request, res = response) => {
-    const {id} = req.params;
-    const deleteStudent = students.deleteStudent()
-
-    res.status(200).json({
-        msg: deleteStudent
-    })
-}
+export default new StudentController();

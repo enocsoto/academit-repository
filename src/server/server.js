@@ -1,13 +1,17 @@
 import express from 'express';
+//import { router } from '../routes/index.js';
 import { router } from '../routes/index.js';
-import { sequelize } from '../config/dbconfig.js';
-
-export const app = express();
+import { sequelize } from '../config/index.js';
+import morgan from 'morgan';
+import expressListEndpoints from 'express-list-endpoints';
+const app = express();
 
 //middleware
 app.use(express.json());
+app.use(morgan('dev'))
 
-
+//routers
+app.use('/api/students', router)
 //db
 try {
     await sequelize.authenticate();
@@ -15,7 +19,7 @@ try {
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
-//routers
-app.use('/api', router)
 
-
+  const endpoints = expressListEndpoints(app);
+  console.log(endpoints);
+export default app;
