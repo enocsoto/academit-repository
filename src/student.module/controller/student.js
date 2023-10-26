@@ -1,6 +1,6 @@
 import { request, response } from "express";
 import { StudentService } from "../service/index.js";
-import HttpResponse from '../utils/errorHandler.js'
+import HttpResponse from '../../utils/errorHandler.js'
 
 class StudentController {
   async getStudentById(req = request, res = response) {
@@ -33,6 +33,14 @@ class StudentController {
   async updateStudent(req = request, res = response) {
     try {
       const studentUpdated = await StudentService.putStudent(req);
+      return HttpResponse.Ok(res, studentUpdated)
+    } catch (error) {
+      return HttpResponse.InternalError(res, error.message);
+    }
+  }
+  async updateCourse(req = request, res = response) {
+    try {
+      const studentUpdated = await StudentService.putCourse(req);
       return HttpResponse.Ok(res, studentUpdated)
     } catch (error) {
       return HttpResponse.InternalError(res, error.message);

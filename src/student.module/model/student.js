@@ -1,6 +1,5 @@
-// models/student.js
 import { DataTypes } from "sequelize";
-import { sequelize } from "../config/index.js";
+import { sequelize } from "../../config/index.js";
 import { v4 as uuidv4 } from "uuid";
 
 const Student = sequelize.define(
@@ -33,11 +32,8 @@ const Student = sequelize.define(
       }
     },
     course: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM("javascript", "typescript", "node.js"),
       allowNull: false,
-      validate: {
-        isIn: ["javascript", "typescript", "node.js"],
-      },
     },
     phone: {
       type: DataTypes.INTEGER,
@@ -64,6 +60,18 @@ const Student = sequelize.define(
         len: [1, 10]
       }
     },
+    status: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    coursesTaken: {
+      type: DataTypes.JSON,
+      defaultValue: {
+        javascript: 0,
+        typescript: 0,
+        'node.js': 0
+      },
+    }
   },
   {
     sequelize,
@@ -85,12 +93,18 @@ const Student = sequelize.define(
     ],
   }
 );
+Student.addScope('active', {
+  where: {
+    status: true
+  }
+})
 
 Student.beforeCreate((student, options) => {
   student.email = student.email.toLowerCase();
   student.name = student.name.toLowerCase();
   student.lastName = student.lastName.toLowerCase();
 });
+
 Student.beforeUpdate((student, options) => {
   if (student.changed("email")) {
     student.email = student.email.toLowerCase();
@@ -102,5 +116,5 @@ Student.beforeUpdate((student, options) => {
     student.lastName = student.lastName.toLowerCase();
   }
 });
-//await Student.sync()
+await Student.sync()
 export default Student;

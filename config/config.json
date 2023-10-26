@@ -5,8 +5,8 @@
     "database": "backend-aeroclub",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "migrationStoragePath": "src/migrations",
-    "seederStoragePath": "src/seeders"
+    "migrationStoragePath": "migrations",
+    "seederStoragePath": "seeders"
   },
   "test": {
     "username": "root",

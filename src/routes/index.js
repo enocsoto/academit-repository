@@ -1,2 +1,5 @@
-import router from './student.js'
-export {router}
+import studentRoutes from './student.js'
+import courseRoutes from './course.js';
+
+export {studentRoutes}
+export {courseRoutes};
