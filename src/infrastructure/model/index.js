@@ -5,4 +5,3 @@ import Student from "./student.js";
 export { Auth };
 export { Course };
 export { Student };
-

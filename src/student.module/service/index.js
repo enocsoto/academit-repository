@@ -1,3 +1,2 @@
 import StudentService from "./student.js";
-export {StudentService};
-
+export { StudentService };

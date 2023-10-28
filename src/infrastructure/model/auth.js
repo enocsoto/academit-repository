@@ -1,10 +1,11 @@
 // models/user.js
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../../config/index.js";
+import { sequelize } from "../config/index.js";
 import Student from "./student.js";
 
-class Auth extends Model{}
-Auth.init({
+class Auth extends Model {}
+Auth.init(
+  {
     id: {
       type: DataTypes.UUID,
       defaultValue: () => uuidv4(),
@@ -23,8 +24,7 @@ Auth.init({
   {
     sequelize,
     modelName: "auth",
-    createdAt: false,
-    updatedAt: false,
+    timestamps: false,
   }
 );
 

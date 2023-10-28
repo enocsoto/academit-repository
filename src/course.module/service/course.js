@@ -1,52 +1,52 @@
-import { Course } from "../../student.module/model/index.js";
+import { Course } from "../../infrastructure/model/index.js";
 
 class CourseService {
   async getAllCourses(req) {
     const { limit, pages } = req.query;
     try {
-      const courses = await Course.findAll();
+      const courses = await Course.findAll({ where: { status: true } });
       if (courses.length === 0) return error;
       return courses;
     } catch (error) {
-      throw new Error(`Courses were not found in the database.`);
+      throw new Error(`Courses were not found in the database. ${error}`);
     }
   }
 
   async getCourse(req) {
     const { id } = req.params;
-    const course = await Course.findByPk(id);
-    if (!course) throw new Error(`Course whit id: ${id} not found`);
-    return course;
+    try {
+      const course = await Course.findOne({ where: { id, status: true } });
+      if (!course) throw new Error(`Course whit id: ${id} not found`);
+      return course;
+    } catch (error) {
+      throw new Error(`The course could not be retrieved. ${error}`);
+    }
   }
 
   async createCourse(req) {
-    const { body } = req;
-    const courseLowerCase = body.title.toLowerCase();
-    const validCourses =   await Course.findOne({Where: {title: courseLowerCase }});
-      //TODO: verificar si existe el curso
+    const { title } = req.body;
+
     try {
-      if (validCourses)
-        throw new Error(`'course' must be one of: ${validCourses.join(", ")}`);
-      
-      const newCourse = await Course.create(body);
+      const validCourses = await Course.findOne({ Where: { title } });
+
+      if (validCourses) throw new Error(`The course already exists in the database.`);
+
+      const newCourse = await Course.create({ title });
+
       return newCourse;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(`The course could not be created. ${error}`);
     }
   }
 
   async putCourse(req) {
     const { id } = req.params;
-    const { title } = req.body;
     try {
-      if (!["javascript", "typescript", "node.js"].includes(title.toLowerCase()))
-        throw new Error(`Invalid course`);
-
-      const course = await Course.findByPk(id);
+      const course = await Course.findOne({ where: { id, status: true } });
 
       if (!course) throw new Error("Course Not Found");
-
-      return await course.save();
+      const courseUpdated = course.set(req.body);
+      return await course.save(courseUpdated);
     } catch (error) {
       throw new Error(`Internal Server Error, ${error}`);
     }
@@ -55,10 +55,16 @@ class CourseService {
   async endCourse(req) {
     const { id } = req.params;
     try {
-      const result = await Course.update(id);
+      const couseStatusTrue = await Course.findOne({where: {id, status:true}});
+      
+      if (!couseStatusTrue) 
+        throw new Error(`The course with the provided ID: ${id} could not be found.`);
+      
+      const result = await Course.update({ status: false }, { where: { id } });
+    
       return result;
     } catch (error) {
-      throw new Error("Error al eliminar el usuario en el servicio");
+      throw new Error(` ${error}`);
     }
   }
 }

@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../../config/index.js";
+import { sequelize } from "../config/index.js";
 import { v4 as uuidv4 } from "uuid";
 import { Student } from "./index.js";
 
@@ -16,10 +16,17 @@ Course.init(
       allowNull: false,
       unique: true,
     },
+    status: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      get() {
+        return undefined;
+      },
+    },
   },
   {
     sequelize,
-    modelName: 'courses',
+    modelName: "courses",
     createdAt: true,
     updatedAt: true,
   }
@@ -27,7 +34,5 @@ Course.init(
 Course.beforeCreate((course, options) => {
   course.title = course.title.toLowerCase();
 });
-//await Course.sync()
-
-//Course.belongsToMany(Student, { through: "StudentCourse" });
+await Course.sync();
 export default Course;

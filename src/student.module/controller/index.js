@@ -1,3 +1,2 @@
 import StudentController from "./student.js";
-export {StudentController}
-
+export { StudentController };

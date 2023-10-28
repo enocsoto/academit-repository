@@ -1,2 +1,2 @@
 import sequelize from "./dbConfig.js";
-export {sequelize};
+export { sequelize };

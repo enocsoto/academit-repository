@@ -10,7 +10,6 @@ const HttpStatus = {
 };
 
 class HttpResponse {
-
   Ok(res = response, data) {
     return res.status(HttpStatus.OK).json({
       statusMsg: "Success",
@@ -44,14 +43,13 @@ class HttpResponse {
       error: data,
     });
   }
-    
+
   InternalError(res = response, data) {
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       statusMsg: "INTERNAL SERVER ERROR",
       error: data,
     });
   }
-
 }
 
-export default new HttpResponse()
+export default new HttpResponse();

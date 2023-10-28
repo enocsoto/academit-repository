@@ -1,3 +1,2 @@
 import CourseController from "./course.js";
-export {CourseController}
-
+export { CourseController };
