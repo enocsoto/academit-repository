@@ -10,11 +10,10 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 
-//Relaciones
-
 //routers
 app.use("/api/students", studentRoutes);
 app.use("/api/courses", courseRoutes);
+
 //db
 try {
   await sequelize.authenticate();

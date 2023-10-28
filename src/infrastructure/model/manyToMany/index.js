@@ -1,7 +1,7 @@
 import Course from "./course.js";
 import Student from "./student.js";
-import StudentCourse from "./studentCourse.js";
+import StudentCourses from "./studentCourse.js";
 
 export { Course };
 export { Student };
-export { StudentCourse };
+export { StudentCourses };

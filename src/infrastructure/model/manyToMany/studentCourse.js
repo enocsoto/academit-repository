@@ -18,12 +18,12 @@ StudentCourses.init(
     timestamps: false,
   }
 );
-Student.belongsToMany(Course, { through: StudentCourses });
-Course.belongsToMany(Student, { through: StudentCourses });
+Student.belongsToMany(Course, { foreignKey: 'studentId', through: StudentCourses });
+Course.belongsToMany(Student, { foreignKey: 'courseId', through: StudentCourses });
 
 //Sync Database
-// await Student.sync();
-// await Course.sync();
-// await StudentCourses.sync();
+await Student.sync();
+await Course.sync();
+await StudentCourses.sync();
 
-export default new StudentCourses();
+export default StudentCourses;
