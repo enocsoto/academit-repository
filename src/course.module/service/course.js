@@ -1,10 +1,10 @@
-import { Course } from "../../infrastructure/model/index.js";
+import { Course, Student} from "../../infrastructure/model/index.js";
 
 class CourseService {
   async getAllCourses(req) {
     const { limit, pages } = req.query;
     try {
-      const courses = await Course.findAll({ where: { status: true } });
+      const courses = await Course.findAll({ where: { status: true }, include: { model: Student} });
       if (courses.length === 0) return error;
       return courses;
     } catch (error) {

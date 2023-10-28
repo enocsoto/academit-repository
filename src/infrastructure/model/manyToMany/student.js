@@ -1,7 +1,6 @@
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../config/index.js";
+import { sequelize } from "../../config/index.js";
 import { v4 as uuidv4 } from "uuid";
-import { Course } from "./index.js";
 
 class Student extends Model {}
 Student.init(
@@ -41,7 +40,7 @@ Student.init(
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
       validate: {
         isEmail: {
@@ -87,13 +86,13 @@ Student.init(
   }
 );
 
-Student.beforeCreate((student, options) => {
+Student.beforeCreate((student) => {
   student.email = student.email.toLowerCase();
   student.name = student.name.toLowerCase();
   student.lastName = student.lastName.toLowerCase();
 });
 
-Student.beforeUpdate((student, options) => {
+Student.beforeUpdate((student) => {
   if (student.changed("email")) student.email = student.email.toLowerCase();
 
   if (student.changed("name")) student.name = student.name.toLowerCase();

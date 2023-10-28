@@ -1,6 +1,6 @@
 import Auth from "./auth.js";
-import Course from "./course.js";
-import Student from "./student.js";
+import Course from "./manyToMany/course.js";
+import Student from "./manyToMany/student.js";
 
 export { Auth };
 export { Course };

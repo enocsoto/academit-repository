@@ -1,7 +1,7 @@
 // models/user.js
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/index.js";
-import Student from "./student.js";
+import Student from "./manyToMany/student.js";
 
 class Auth extends Model {}
 Auth.init(
