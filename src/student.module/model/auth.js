@@ -1,11 +1,10 @@
 // models/user.js
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../config/index.js";
+import { sequelize } from "../../config/index.js";
 import Student from "./student.js";
 
-const Auth = sequelize.define(
-  "auth",
-  {
+class Auth extends Model{}
+Auth.init({
     id: {
       type: DataTypes.UUID,
       defaultValue: () => uuidv4(),
@@ -34,5 +33,5 @@ Auth.belongsTo(Student, {
   targetKey: "id", // Define el nombre de la clave primaria en la tabla Student
 });
 // sincroniza los cambios que tenga el modelo con la DB
-await Auth.sync()
+//await Auth.sync()
 export default Auth;

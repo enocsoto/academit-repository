@@ -1,10 +1,10 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../config/index.js";
 import { v4 as uuidv4 } from "uuid";
+import { Course } from "./index.js";
 
-const Student = sequelize.define(
-  "students", //nombre de la tabla
-  {
+class Student extends Model {}
+Student.init({
     id: {
       type: DataTypes.UUID,
       defaultValue: () => uuidv4(),
@@ -30,10 +30,6 @@ const Student = sequelize.define(
       validate: {
         max:99
       }
-    },
-    course: {
-      type: DataTypes.ENUM("javascript", "typescript", "node.js"),
-      allowNull: false,
     },
     phone: {
       type: DataTypes.INTEGER,
@@ -64,17 +60,10 @@ const Student = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
-    coursesTaken: {
-      type: DataTypes.JSON,
-      defaultValue: {
-        javascript: 0,
-        typescript: 0,
-        'node.js': 0
-      },
-    }
   },
   {
     sequelize,
+    modelName: 'students',
     createdAt: true,
     updatedAt: true,
     indexes: [
@@ -116,5 +105,7 @@ Student.beforeUpdate((student, options) => {
     student.lastName = student.lastName.toLowerCase();
   }
 });
+
 await Student.sync()
+//Student.belongsToMany(Course, { through: "StudentCourse" });
 export default Student;

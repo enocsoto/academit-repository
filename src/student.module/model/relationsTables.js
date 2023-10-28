@@ -1,8 +1,11 @@
 import { Student, Course, Auth } from'./index.js';
 
-// Relaciones
-Student.belongsToMany(Course, { through: 'StudentCourses' });
-Course.belongsToMany(Student, { through: 'StudentCourses' });
+// Relaciones muchos a muchos
+const relationModels = () => {
+    Auth.belongsTo(Student);
+    Student.hasOne(Auth);
+    Course.belongsToMany(Student, { through: "StudentCourse" });
+    Student.belongsToMany(Course, { through: "StudentCourse" });
+}
 
-Student.hasOne(Auth);
-Auth.belongsTo(Student);
+export default relationModels;

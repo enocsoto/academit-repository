@@ -1,9 +1,10 @@
-import { DataTypes } from "sequelize";
-import {Student} from '../../student.module/model/index.js'
-import { sequelize } from "../../config/index.js" ;
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../../config/index.js";
 import { v4 as uuidv4 } from "uuid";
-const Course = sequelize.define(
-  "course", //nombre de la tabla
+import { Student } from "./index.js";
+
+class Course extends Model {}
+Course.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -13,18 +14,20 @@ const Course = sequelize.define(
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
   },
   {
     sequelize,
+    modelName: 'courses',
     createdAt: true,
     updatedAt: true,
   }
 );
-await Course.sync()
 Course.beforeCreate((course, options) => {
   course.title = course.title.toLowerCase();
 });
+//await Course.sync()
 
-Student.belongsToMany(Course, { through: 'StudentCourses' });
+//Course.belongsToMany(Student, { through: "StudentCourse" });
 export default Course;

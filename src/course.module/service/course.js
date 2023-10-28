@@ -1,4 +1,4 @@
-import { Course } from "../model/index.js";
+import { Course } from "../../student.module/model/index.js";
 
 class CourseService {
   async getAllCourses(req) {
