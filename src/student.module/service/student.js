@@ -24,11 +24,12 @@ class StudentService {
   async getStudent(req) {
     const { id } = req.params;
     try {
-      const student = await Student.findOne({ 
+      const student = await Student.findOne({
         where: { id, status: true },
         include: {
-          model: Course
-        } });
+          model: Course,
+        },
+      });
 
       if (!student) throw new Error(`Student whit id: ${id} not found`);
 
@@ -47,8 +48,8 @@ class StudentService {
 
       if (existEmail) throw new Error(`email or Id already exists`);
 
+      const courseTitle = body.course;
       const result = await sequelize.transaction(async (t) => {
-        const courseTitle = body.course;
 
         delete body.course;
 
@@ -60,10 +61,13 @@ class StudentService {
 
         if (!newCourse) throw new Error("Error creating the associated course");
 
-        await StudentCourses.create({
-          studentId: newStudent.id,
-          courseId: newCourse.id,
-        }, { transaction: t });
+        await StudentCourses.create(
+          {
+            studentId: newStudent.id,
+            courseId: newCourse.id,
+          },
+          { transaction: t }
+        );
         return newStudent;
       });
 
@@ -77,22 +81,33 @@ class StudentService {
     const { id } = req.params;
     const { body } = req;
     try {
-      const searchStudent = await Student.findOne({ 
-        where: { id, status: true },
-        include: {model: Course} });
+      
+      const searchStudentById = await StudentCourses.findOne({
+        where: {studentId : id}});
+      
+      if(!searchStudentById) throw new Error(`Student not Found`)
 
-      if (!searchStudent) 
-        throw new Error(`Student whit id ${id} not found`);
-        //TODO: PENDIENTE POR CORREGIR
-      if (body.course) {
-          updatedStudentWithCourse.courses.title = body.course; // Actualiza el título del curso
-        }else {
-          const newCourse = await Course.create({ title: body.course});
-          await updatedStudentWithCourse.update(newCourse)
+      const studentId = searchStudentById.studentId;
+      const courseId = searchStudentById.courseId;
+
+      const updateStudentAndCourse = await sequelize.transaction(async (t) => {
+        const studentUpdated = await Student.update(body, {
+          where: { id: studentId, status: true },
+          transaction: t,
+        });
+        
+        const courseUpdated = await Course.update({title: body.course}, 
+          { where: { id: courseId  },
+          transaction: t
+        });
+
+        if (studentUpdated[0] === 0 || courseUpdated[0] === 0) {
+          throw new Error(`Error updating student or course`);
         }
-        const result = await updatedStudentWithCourse.save(body);
-      return result;
-
+  
+        return studentUpdated
+      });
+      return updateStudentAndCourse;
     } catch (error) {
       throw new Error(`Error to updated Student, ${error.message}`);
     }
