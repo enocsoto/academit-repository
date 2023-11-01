@@ -1,18 +1,18 @@
 import express from "express";
-import { courseRoutes, studentRoutes } from "../routes/index.js";
+import { Auth, courseRoutes, studentRoutes } from "../routes/index.js";
 import { sequelize } from "../infrastructure/config/index.js";
 import "../infrastructure/model/manyToMany/studentCourse.js";
-import morgan from "morgan";
+import passport from "passport";
 
 const app = express();
 
 //middleware
 app.use(express.json());
-app.use(morgan("dev"));
 
 //routers
 app.use("/api/students", studentRoutes);
 app.use("/api/courses", courseRoutes);
+app.use("/api", Auth);
 
 //db
 try {

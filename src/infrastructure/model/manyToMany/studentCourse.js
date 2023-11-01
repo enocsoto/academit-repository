@@ -22,8 +22,8 @@ Student.belongsToMany(Course, { foreignKey: 'studentId', through: StudentCourses
 Course.belongsToMany(Student, { foreignKey: 'courseId', through: StudentCourses });
 
 //Sync Database
-await Student.sync();
-await Course.sync();
-await StudentCourses.sync();
+// await Student.sync();
+// await Course.sync();
+// await StudentCourses.sync();
 
 export default StudentCourses;

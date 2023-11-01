@@ -42,12 +42,16 @@ class StudentService {
   async createStudent(req) {
     const { body } = req;
     try {
-      const existEmail = await Student.findOne({
-        where: { email: body.email, documentId: body.documentId },
-      });
+      const existEmail = await Student.findOne({ where: { email: body.email }});
 
-      if (existEmail) throw new Error(`email or Id already exists`);
+      if (existEmail) 
+        throw new Error(`email already exists`);
+    
+        const existDocumentId = await Student.findOne({ where: { documentId: body.documentId }});
 
+      if (existDocumentId) 
+        throw new Error(`Document already exists`);
+      
       const courseTitle = body.course;
       const result = await sequelize.transaction(async (t) => {
 

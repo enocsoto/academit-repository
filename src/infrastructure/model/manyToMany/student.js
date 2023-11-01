@@ -14,28 +14,35 @@ Student.init(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 30],
+        len: [2, 30],
       },
     },
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 30],
+        len: [2, 30],
       },
     },
     age: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        max: 99,
+        isNumeric: {
+          msg: "Invalid Age must contain only numbers",
+        },
+        min: 16,
+        max: 100,
       },
     },
     phone: {
       type: DataTypes.INTEGER,
       unique: true,
       validate: {
-        len: [1, 10],
+        isNumeric: {
+          msg: "Invalid Phone Number must contain only numbers",
+        },
+        len: [1, 10]
       },
     },
     email: {
@@ -53,6 +60,9 @@ Student.init(
       allowNull: false,
       unique: true,
       validate: {
+        isInt: {
+          msg: "Invalid Document Id must contain only numbers",
+        },
         len: [1, 10],
       },
     },
